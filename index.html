@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>일본어 단어 암기</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="site-header">
+    <h1>일본어 단어 암기</h1>
+</header>
+
+
+<main class="main-container">
+
+    <section class="chapter-section">
+
+        <h2>챕터 선택</h2>
+
+        <div id="chapterList" class="chapter-list">
+            <p class="loading">
+                챕터를 불러오는 중...
+            </p>
+        </div>
+
+    </section>
+
+
+    <section class="start-section">
+
+        <button
+            id="startButton"
+            class="primary-button"
+            disabled
+        >
+            암기 시작
+        </button>
+
+        <p
+            id="selectionInfo"
+            class="selection-info"
+        >
+            챕터를 선택해주세요.
+        </p>
+
+    </section>
+
+</main>
+
+
+<script src="js/common.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

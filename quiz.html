@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>문제 풀기</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="site-header">
+    <h1>일본어 단어 암기</h1>
+</header>
+
+
+<main class="quiz-container">
+
+    <!-- 상단 진행도 / 돌아가기 -->
+    <div class="quiz-top">
+
+        <div
+            id="progressText"
+            class="quiz-progress"
+        >
+            0 / 0
+        </div>
+
+        <button
+            id="exitButton"
+            class="exit-button"
+        >
+            돌아가기
+        </button>
+
+    </div>
+
+
+    <!-- 일본어 단어 -->
+    <section class="word-card">
+
+        <div
+            id="wordText"
+            class="word-text"
+        >
+            -
+        </div>
+
+    </section>
+
+
+    <!-- 발음 / 뜻 -->
+    <section
+        id="answerCard"
+        class="answer-card"
+        role="button"
+        tabindex="0"
+    >
+
+        <div
+            id="answerContent"
+            class="answer-content"
+        >
+            클릭해서 정답 확인
+        </div>
+
+    </section>
+
+
+    <!-- 정답 / 오답 -->
+    <section
+        id="resultButtons"
+        class="result-buttons hidden"
+    >
+
+        <button
+            id="wrongButton"
+            class="result-button wrong-button"
+        >
+            오답
+        </button>
+
+        <button
+            id="correctButton"
+            class="result-button correct-button"
+        >
+            정답
+        </button>
+
+    </section>
+
+</main>
+
+
+<script src="js/common.js"></script>
+<script src="js/quiz.js"></script>
+
+</body>
+</html>
