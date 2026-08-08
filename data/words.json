@@ -2,73 +2,79 @@
     "chapters": [
         {
             "id": "chapter01",
-            "name": "기초 동사",
-            "words": [
-                {
-                    "id": "word001",
-                    "word": "食べる",
-                    "reading": "たべる",
-                    "meaning": "먹다"
-                },
-                {
-                    "id": "word002",
-                    "word": "飲む",
-                    "reading": "のむ",
-                    "meaning": "마시다"
-                },
-                {
-                    "id": "word003",
-                    "word": "見る",
-                    "reading": "みる",
-                    "meaning": "보다"
-                },
-                {
-                    "id": "word004",
-                    "word": "聞く",
-                    "reading": "きく",
-                    "meaning": "듣다, 묻다"
-                }
-            ]
-        },
-        {
-            "id": "chapter02",
-            "name": "기초 명사",
-            "words": [
-                {
-                    "id": "word005",
-                    "word": "学校",
-                    "reading": "がっこう",
-                    "meaning": "학교"
-                },
-                {
-                    "id": "word006",
-                    "word": "先生",
-                    "reading": "せんせい",
-                    "meaning": "선생님"
-                },
-                {
-                    "id": "word007",
-                    "word": "学生",
-                    "reading": "がくせい",
-                    "meaning": "학생"
-                }
-            ]
-        },
-        {
-            "id": "chapter03",
-            "name": "N1 어휘",
+            "name": "한자읽기 기출어휘 2024",
             "words": [
                 {
                     "id": "word008",
-                    "word": "促す",
-                    "reading": "うながす",
-                    "meaning": "재촉하다, 촉구하다"
+                    "word": "腐敗",
+                    "reading": "ふはい",
+                    "meaning": "부패"
                 },
                 {
                     "id": "word009",
-                    "word": "妨げる",
-                    "reading": "さまたげる",
-                    "meaning": "방해하다"
+                    "word": "粘膜",
+                    "reading": "ねんまく",
+                    "meaning": "점막"
+                },
+                {
+                    "id": "word_1786198813348_38865",
+                    "word": "戒める",
+                    "reading": "いましめる",
+                    "meaning": "경고하다, 징계하다"
+                },
+                {
+                    "id": "word_1786198866492_54968",
+                    "word": "絶叫",
+                    "reading": "ぜっきょう",
+                    "meaning": "절규"
+                },
+                {
+                    "id": "word_1786198888396_13697",
+                    "word": "抱負",
+                    "reading": "ほうふ",
+                    "meaning": "포부"
+                },
+                {
+                    "id": "word_1786198958716_5250",
+                    "word": "筋道(を立てる)",
+                    "reading": "すじみち(を立てる)",
+                    "meaning": "조리(있게 하다)"
+                },
+                {
+                    "id": "word_1786198987893_82109",
+                    "word": "粗い",
+                    "reading": "あらい",
+                    "meaning": "거칠다, 조잡하다"
+                },
+                {
+                    "id": "word_1786199018402_43211",
+                    "word": "寿命",
+                    "reading": "じゅみょう",
+                    "meaning": "수명"
+                },
+                {
+                    "id": "word_1786199038690_44052",
+                    "word": "誓約書",
+                    "reading": "せいやくしょ",
+                    "meaning": "서약서"
+                },
+                {
+                    "id": "word_1786199057554_22002",
+                    "word": "背後",
+                    "reading": "はいご",
+                    "meaning": "배후"
+                },
+                {
+                    "id": "word_1786199090242_91839",
+                    "word": "侮る",
+                    "reading": "あなどる",
+                    "meaning": "깔보다, 업신여기다"
+                },
+                {
+                    "id": "word_1786199195910_26612",
+                    "word": "奔放(な性格)",
+                    "reading": "ほんぽう(な性格)",
+                    "meaning": "분방한 (성격)"
                 }
             ]
         }
