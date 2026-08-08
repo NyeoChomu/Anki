@@ -1,13 +1,27 @@
 let wordData = null;
 
+let selectedChapterId = null;
+
 
 /* =========================
    HTML 요소
 ========================= */
 
-const chapterNameInput =
+const chapterSelect =
     document.getElementById(
-        "chapterName"
+        "chapterSelect"
+    );
+
+
+const deleteChapterButton =
+    document.getElementById(
+        "deleteChapterButton"
+    );
+
+
+const newChapterName =
+    document.getElementById(
+        "newChapterName"
     );
 
 
@@ -17,39 +31,57 @@ const addChapterButton =
     );
 
 
-const chapterSelect =
+const chapterEditor =
     document.getElementById(
-        "chapterSelect"
+        "chapterEditor"
     );
 
 
-const wordInput =
+const chapterName =
     document.getElementById(
-        "wordInput"
+        "chapterName"
     );
 
 
-const readingInput =
+const saveChapterButton =
     document.getElementById(
-        "readingInput"
+        "saveChapterButton"
     );
 
 
-const meaningInput =
+const wordList =
     document.getElementById(
-        "meaningInput"
+        "wordList"
+    );
+
+
+const wordCount =
+    document.getElementById(
+        "wordCount"
+    );
+
+
+const newWord =
+    document.getElementById(
+        "newWord"
+    );
+
+
+const newReading =
+    document.getElementById(
+        "newReading"
+    );
+
+
+const newMeaning =
+    document.getElementById(
+        "newMeaning"
     );
 
 
 const addWordButton =
     document.getElementById(
         "addWordButton"
-    );
-
-
-const dataList =
-    document.getElementById(
-        "dataList"
     );
 
 
@@ -71,70 +103,53 @@ const downloadJsonButton =
     );
 
 
-const backButton =
-    document.getElementById(
-        "backButton"
-    );
-
-
 /* =========================
    초기화
 ========================= */
 
 document.addEventListener(
     "DOMContentLoaded",
-    initializeSettings
+    initialize
 );
 
 
-async function initializeSettings() {
+async function initialize() {
 
     try {
 
-        wordData =
+        const data =
             await loadWordData();
 
 
         /*
-         * JSON 원본을 그대로 사용하지 않고
-         * 새 객체로 복사한다.
+         * 원본 객체를 직접 수정하지 않고
+         * 복사본을 사용한다.
          */
         wordData =
             JSON.parse(
-                JSON.stringify(wordData)
+                JSON.stringify(data)
             );
 
 
-        renderAll();
+        renderChapterSelect();
+
+        updateJson();
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
 
-        dataList.innerHTML = `
-            <p class="error-message">
-                words.json을 불러오지 못했습니다.
-            </p>
-        `;
+        alert(
+            "words.json을 불러오지 못했습니다."
+        );
+
 
         jsonOutput.value =
             "words.json을 불러오지 못했습니다.";
     }
-}
-
-
-/* =========================
-   전체 화면 갱신
-========================= */
-
-function renderAll() {
-
-    renderChapterSelect();
-
-    renderDataList();
-
-    updateJsonOutput();
 }
 
 
@@ -173,245 +188,178 @@ function renderChapterSelect() {
             );
         }
     );
+
+
+    /*
+     * 기존에 선택했던 챕터가 있다면
+     * 선택 상태 유지
+     */
+    if (selectedChapterId) {
+
+        const exists =
+            wordData.chapters.some(
+                chapter =>
+                    chapter.id ===
+                    selectedChapterId
+            );
+
+
+        if (exists) {
+
+            chapterSelect.value =
+                selectedChapterId;
+
+        } else {
+
+            selectedChapterId =
+                null;
+
+        }
+    }
 }
 
 
 /* =========================
-   현재 데이터 표시
+   챕터 선택
 ========================= */
 
-function renderDataList() {
+chapterSelect.addEventListener(
+    "change",
+    handleChapterSelect
+);
 
-    dataList.innerHTML = "";
+
+function handleChapterSelect() {
+
+    selectedChapterId =
+        chapterSelect.value ||
+        null;
 
 
-    if (
-        wordData.chapters.length === 0
-    ) {
+    renderSelectedChapter();
+}
 
-        dataList.innerHTML = `
-            <p class="empty-message">
-                등록된 챕터가 없습니다.
-            </p>
-        `;
+
+/* =========================
+   선택 챕터 표시
+========================= */
+
+function renderSelectedChapter() {
+
+    if (!selectedChapterId) {
+
+        chapterEditor.classList.add(
+            "hidden"
+        );
 
         return;
     }
 
 
-    wordData.chapters.forEach(
-        chapter => {
-
-            const chapterBox =
-                document.createElement(
-                    "div"
-                );
+    const chapter =
+        getSelectedChapter();
 
 
-            chapterBox.className =
-                "data-chapter";
+    if (!chapter) {
+
+        chapterEditor.classList.add(
+            "hidden"
+        );
+
+        return;
+    }
 
 
-            const chapterHeader =
-                document.createElement(
-                    "div"
-                );
-
-
-            chapterHeader.className =
-                "data-chapter-header";
-
-
-            chapterHeader.innerHTML = `
-
-                <div>
-
-                    <div class="data-chapter-name">
-                        ${escapeHtml(
-                            chapter.name
-                        )}
-                    </div>
-
-                    <div class="data-chapter-count">
-                        ${chapter.words.length}단어
-                    </div>
-
-                </div>
-
-                <button
-                    class="delete-button"
-                    data-chapter-id="${escapeHtml(
-                        chapter.id
-                    )}"
-                >
-                    챕터 삭제
-                </button>
-
-            `;
-
-
-            chapterBox.appendChild(
-                chapterHeader
-            );
-
-
-            /*
-             * 단어 목록
-             */
-
-            if (
-                chapter.words.length === 0
-            ) {
-
-                const empty =
-                    document.createElement(
-                        "p"
-                    );
-
-
-                empty.className =
-                    "empty-message";
-
-
-                empty.textContent =
-                    "등록된 단어가 없습니다.";
-
-
-                chapterBox.appendChild(
-                    empty
-                );
-
-            } else {
-
-                const wordList =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                wordList.className =
-                    "data-word-list";
-
-
-                chapter.words.forEach(
-                    word => {
-
-                        const wordItem =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        wordItem.className =
-                            "data-word";
-
-
-                        wordItem.innerHTML = `
-
-                            <div class="data-word-info">
-
-                                <div class="data-word-text">
-                                    ${escapeHtml(
-                                        word.word
-                                    )}
-                                </div>
-
-                                <div class="data-word-reading">
-                                    ${escapeHtml(
-                                        word.reading
-                                    )}
-                                </div>
-
-                                <div class="data-word-meaning">
-                                    ${escapeHtml(
-                                        word.meaning
-                                    )}
-                                </div>
-
-                            </div>
-
-                            <button
-                                class="delete-button word-delete-button"
-                                data-chapter-id="${escapeHtml(
-                                    chapter.id
-                                )}"
-                                data-word-id="${escapeHtml(
-                                    word.id
-                                )}"
-                            >
-                                삭제
-                            </button>
-
-                        `;
-
-
-                        wordList.appendChild(
-                            wordItem
-                        );
-                    }
-                );
-
-
-                chapterBox.appendChild(
-                    wordList
-                );
-            }
-
-
-            dataList.appendChild(
-                chapterBox
-            );
-        }
+    chapterEditor.classList.remove(
+        "hidden"
     );
 
 
     /*
-     * 챕터 삭제 이벤트
+     * 기존 챕터 이름을
+     * input에 넣는다.
      */
+    chapterName.value =
+        chapter.name;
 
-    document
-        .querySelectorAll(
-            ".delete-button[data-chapter-id]:not(.word-delete-button)"
-        )
-        .forEach(
-            button => {
 
-                button.addEventListener(
-                    "click",
-                    () => {
+    renderWordList();
+}
 
-                        deleteChapter(
-                            button.dataset.chapterId
-                        );
-                    }
-                );
-            }
+
+/* =========================
+   선택 챕터 가져오기
+========================= */
+
+function getSelectedChapter() {
+
+    if (!selectedChapterId) {
+        return null;
+    }
+
+
+    return wordData.chapters.find(
+        chapter =>
+            chapter.id ===
+            selectedChapterId
+    );
+}
+
+
+/* =========================
+   챕터 이름 저장
+========================= */
+
+saveChapterButton.addEventListener(
+    "click",
+    saveChapterName
+);
+
+
+function saveChapterName() {
+
+    const chapter =
+        getSelectedChapter();
+
+
+    if (!chapter) {
+        return;
+    }
+
+
+    const name =
+        chapterName.value.trim();
+
+
+    if (!name) {
+
+        alert(
+            "챕터 이름을 입력해주세요."
         );
 
+        chapterName.focus();
 
-    /*
-     * 단어 삭제 이벤트
-     */
+        return;
+    }
 
-    document
-        .querySelectorAll(
-            ".word-delete-button"
-        )
-        .forEach(
-            button => {
 
-                button.addEventListener(
-                    "click",
-                    () => {
+    chapter.name =
+        name;
 
-                        deleteWord(
-                            button.dataset.chapterId,
-                            button.dataset.wordId
-                        );
-                    }
-                );
-            }
-        );
+
+    renderChapterSelect();
+
+
+    chapterSelect.value =
+        selectedChapterId;
+
+
+    updateJson();
+
+
+    alert(
+        "챕터 이름을 수정했습니다."
+    );
 }
 
 
@@ -428,7 +376,7 @@ addChapterButton.addEventListener(
 function addChapter() {
 
     const name =
-        chapterNameInput.value.trim();
+        newChapterName.value.trim();
 
 
     if (!name) {
@@ -437,20 +385,37 @@ function addChapter() {
             "챕터 이름을 입력해주세요."
         );
 
-        chapterNameInput.focus();
+        newChapterName.focus();
 
         return;
     }
 
 
     /*
-     * ID 생성
+     * 동일한 이름의 챕터가 있는지 확인
      */
+    const duplicate =
+        wordData.chapters.some(
+            chapter =>
+                chapter.name === name
+        );
+
+
+    if (duplicate) {
+
+        alert(
+            "이미 같은 이름의 챕터가 있습니다."
+        );
+
+        return;
+    }
+
+
     const id =
-        createUniqueChapterId();
+        createChapterId();
 
 
-    wordData.chapters.push({
+    const newChapter = {
 
         id: id,
 
@@ -458,16 +423,37 @@ function addChapter() {
 
         words: []
 
-    });
+    };
+
+
+    wordData.chapters.push(
+        newChapter
+    );
 
 
     /*
      * 입력창 초기화
      */
-    chapterNameInput.value = "";
+    newChapterName.value = "";
 
 
-    renderAll();
+    /*
+     * 새 챕터를 자동으로 선택
+     */
+    selectedChapterId =
+        id;
+
+
+    renderChapterSelect();
+
+
+    chapterSelect.value =
+        id;
+
+
+    renderSelectedChapter();
+
+    updateJson();
 }
 
 
@@ -475,25 +461,31 @@ function addChapter() {
    챕터 삭제
 ========================= */
 
-function deleteChapter(
-    chapterId
-) {
+deleteChapterButton.addEventListener(
+    "click",
+    deleteSelectedChapter
+);
+
+
+function deleteSelectedChapter() {
 
     const chapter =
-        wordData.chapters.find(
-            item =>
-                item.id === chapterId
-        );
+        getSelectedChapter();
 
 
     if (!chapter) {
+
+        alert(
+            "삭제할 챕터를 선택해주세요."
+        );
+
         return;
     }
 
 
     const confirmed =
         confirm(
-            `"${chapter.name}" 챕터를 삭제하시겠습니까?\n\n챕터 안의 단어도 모두 삭제됩니다.`
+            `"${chapter.name}" 챕터를 삭제하시겠습니까?\n\n챕터 안의 모든 단어도 함께 삭제됩니다.`
         );
 
 
@@ -505,58 +497,242 @@ function deleteChapter(
     wordData.chapters =
         wordData.chapters.filter(
             item =>
-                item.id !== chapterId
+                item.id !==
+                selectedChapterId
         );
 
 
-    renderAll();
+    selectedChapterId =
+        null;
+
+
+    renderChapterSelect();
+
+
+    renderSelectedChapter();
+
+
+    updateJson();
 }
 
 
 /* =========================
-   단어 추가
+   단어 목록 표시
 ========================= */
 
-addWordButton.addEventListener(
-    "click",
-    addWord
-);
+function renderWordList() {
+
+    const chapter =
+        getSelectedChapter();
 
 
-function addWord() {
-
-    const chapterId =
-        chapterSelect.value;
-
-
-    const word =
-        wordInput.value.trim();
+    if (!chapter) {
+        return;
+    }
 
 
-    const reading =
-        readingInput.value.trim();
+    wordList.innerHTML = "";
 
 
-    const meaning =
-        meaningInput.value.trim();
+    wordCount.textContent =
+        `${chapter.words.length}단어`;
 
 
-    if (!chapterId) {
+    if (
+        chapter.words.length === 0
+    ) {
 
-        alert(
-            "챕터를 선택해주세요."
-        );
-
-        chapterSelect.focus();
+        wordList.innerHTML = `
+            <p class="empty-message">
+                이 챕터에는 등록된 단어가 없습니다.
+            </p>
+        `;
 
         return;
     }
 
 
-    if (!word) {
+    chapter.words.forEach(
+        word => {
+
+            const wordBox =
+                document.createElement(
+                    "div"
+                );
+
+
+            wordBox.className =
+                "word-edit-item";
+
+
+            wordBox.innerHTML = `
+
+                <div class="input-group">
+
+                    <label>
+                        일본어
+                    </label>
+
+                    <input
+                        class="edit-word"
+                        type="text"
+                        value="${escapeHtmlAttribute(
+                            word.word
+                        )}"
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        발음
+                    </label>
+
+                    <input
+                        class="edit-reading"
+                        type="text"
+                        value="${escapeHtmlAttribute(
+                            word.reading
+                        )}"
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        뜻
+                    </label>
+
+                    <input
+                        class="edit-meaning"
+                        type="text"
+                        value="${escapeHtmlAttribute(
+                            word.meaning
+                        )}"
+                    >
+
+                </div>
+
+
+                <div class="word-action-row">
+
+                    <button
+                        class="secondary-button save-word-button"
+                        type="button"
+                    >
+                        수정 저장
+                    </button>
+
+                    <button
+                        class="danger-button delete-word-button"
+                        type="button"
+                    >
+                        단어 삭제
+                    </button>
+
+                </div>
+
+            `;
+
+
+            /*
+             * 단어 수정
+             */
+
+            const saveButton =
+                wordBox.querySelector(
+                    ".save-word-button"
+                );
+
+
+            saveButton.addEventListener(
+                "click",
+                () => {
+
+                    saveWord(
+                        word,
+                        wordBox
+                    );
+                }
+            );
+
+
+            /*
+             * 단어 삭제
+             */
+
+            const deleteButton =
+                wordBox.querySelector(
+                    ".delete-word-button"
+                );
+
+
+            deleteButton.addEventListener(
+                "click",
+                () => {
+
+                    deleteWord(
+                        word.id
+                    );
+                }
+            );
+
+
+            wordList.appendChild(
+                wordBox
+            );
+        }
+    );
+}
+
+
+/* =========================
+   단어 수정
+========================= */
+
+function saveWord(
+    word,
+    wordBox
+) {
+
+    const wordInput =
+        wordBox.querySelector(
+            ".edit-word"
+        );
+
+
+    const readingInput =
+        wordBox.querySelector(
+            ".edit-reading"
+        );
+
+
+    const meaningInput =
+        wordBox.querySelector(
+            ".edit-meaning"
+        );
+
+
+    const wordValue =
+        wordInput.value.trim();
+
+
+    const readingValue =
+        readingInput.value.trim();
+
+
+    const meaningValue =
+        meaningInput.value.trim();
+
+
+    if (!wordValue) {
 
         alert(
-            "단어를 입력해주세요."
+            "일본어 단어를 입력해주세요."
         );
 
         wordInput.focus();
@@ -565,7 +741,7 @@ function addWord() {
     }
 
 
-    if (!reading) {
+    if (!readingValue) {
 
         alert(
             "발음을 입력해주세요."
@@ -577,7 +753,7 @@ function addWord() {
     }
 
 
-    if (!meaning) {
+    if (!meaningValue) {
 
         alert(
             "뜻을 입력해주세요."
@@ -589,57 +765,74 @@ function addWord() {
     }
 
 
-    const chapter =
-        wordData.chapters.find(
-            item =>
-                item.id === chapterId
+    /*
+     * 기존 객체의 값만 변경
+     */
+    word.word =
+        wordValue;
+
+
+    word.reading =
+        readingValue;
+
+
+    word.meaning =
+        meaningValue;
+
+
+    updateJson();
+
+
+    /*
+     * 버튼을 잠시 변경해서
+     * 저장됐다는 것을 보여준다.
+     */
+
+    const originalText =
+        saveButtonText(
+            wordBox
         );
 
 
-    if (!chapter) {
-        return;
-    }
-
-
-    /*
-     * 단어 ID 생성
-     */
-    const id =
-        createUniqueWordId(
-            chapter
+    const saveButton =
+        wordBox.querySelector(
+            ".save-word-button"
         );
 
 
-    chapter.words.push({
-
-        id: id,
-
-        word: word,
-
-        reading: reading,
-
-        meaning: meaning
-
-    });
+    saveButton.textContent =
+        "저장 완료";
 
 
-    /*
-     * 입력창 초기화
-     */
-    wordInput.value = "";
-    readingInput.value = "";
-    meaningInput.value = "";
+    setTimeout(
+        () => {
+
+            saveButton.textContent =
+                originalText;
+
+        },
+        1200
+    );
+}
 
 
-    renderAll();
+/*
+ * 저장 버튼 원래 텍스트
+ */
+function saveButtonText(
+    wordBox
+) {
+
+    const button =
+        wordBox.querySelector(
+            ".save-word-button"
+        );
 
 
-    /*
-     * 계속 같은 챕터에 단어를
-     * 추가할 수 있도록 선택 상태 유지
-     */
-    chapterSelect.value =
-        chapterId;
+    return button.textContent ===
+        "저장 완료"
+        ? "수정 저장"
+        : button.textContent;
 }
 
 
@@ -648,15 +841,11 @@ function addWord() {
 ========================= */
 
 function deleteWord(
-    chapterId,
     wordId
 ) {
 
     const chapter =
-        wordData.chapters.find(
-            item =>
-                item.id === chapterId
-        );
+        getSelectedChapter();
 
 
     if (!chapter) {
@@ -678,7 +867,7 @@ function deleteWord(
 
     const confirmed =
         confirm(
-            `"${word.word}"을(를) 삭제하시겠습니까?`
+            `"${word.word}" 단어를 삭제하시겠습니까?`
         );
 
 
@@ -694,15 +883,203 @@ function deleteWord(
         );
 
 
-    renderAll();
+    renderWordList();
+
+    updateJson();
 }
 
 
 /* =========================
-   JSON 생성
+   단어 추가
 ========================= */
 
-function updateJsonOutput() {
+addWordButton.addEventListener(
+    "click",
+    addWord
+);
+
+
+function addWord() {
+
+    const chapter =
+        getSelectedChapter();
+
+
+    if (!chapter) {
+
+        alert(
+            "먼저 챕터를 선택해주세요."
+        );
+
+        return;
+    }
+
+
+    const wordValue =
+        newWord.value.trim();
+
+
+    const readingValue =
+        newReading.value.trim();
+
+
+    const meaningValue =
+        newMeaning.value.trim();
+
+
+    if (!wordValue) {
+
+        alert(
+            "일본어 단어를 입력해주세요."
+        );
+
+        newWord.focus();
+
+        return;
+    }
+
+
+    if (!readingValue) {
+
+        alert(
+            "발음을 입력해주세요."
+        );
+
+        newReading.focus();
+
+        return;
+    }
+
+
+    if (!meaningValue) {
+
+        alert(
+            "뜻을 입력해주세요."
+        );
+
+        newMeaning.focus();
+
+        return;
+    }
+
+
+    const newWordObject = {
+
+        id:
+            createWordId(
+                chapter
+            ),
+
+        word:
+            wordValue,
+
+        reading:
+            readingValue,
+
+        meaning:
+            meaningValue
+
+    };
+
+
+    chapter.words.push(
+        newWordObject
+    );
+
+
+    /*
+     * 입력창 초기화
+     */
+    newWord.value = "";
+
+    newReading.value = "";
+
+    newMeaning.value = "";
+
+
+    renderWordList();
+
+    updateJson();
+
+
+    /*
+     * 다음 단어를 바로 입력할 수 있도록
+     * 첫 번째 입력창에 포커스
+     */
+    newWord.focus();
+}
+
+
+/* =========================
+   ID 생성
+========================= */
+
+function createChapterId() {
+
+    let id;
+
+
+    do {
+
+        id =
+            "chapter_" +
+            Date.now() +
+            "_" +
+            Math.floor(
+                Math.random() * 100000
+            );
+
+    } while (
+        wordData.chapters.some(
+            chapter =>
+                chapter.id === id
+        )
+    );
+
+
+    return id;
+}
+
+
+function createWordId(
+    chapter
+) {
+
+    let id;
+
+
+    do {
+
+        id =
+            "word_" +
+            Date.now() +
+            "_" +
+            Math.floor(
+                Math.random() * 100000
+            );
+
+    } while (
+        chapter.words.some(
+            word =>
+                word.id === id
+        )
+    );
+
+
+    return id;
+}
+
+
+/* =========================
+   JSON 업데이트
+========================= */
+
+function updateJson() {
+
+    if (!wordData) {
+        return;
+    }
+
 
     jsonOutput.value =
         JSON.stringify(
@@ -719,51 +1096,56 @@ function updateJsonOutput() {
 
 copyJsonButton.addEventListener(
     "click",
-    async () => {
-
-        try {
-
-            await navigator.clipboard.writeText(
-                jsonOutput.value
-            );
-
-
-            const originalText =
-                copyJsonButton.textContent;
-
-
-            copyJsonButton.textContent =
-                "복사 완료";
-
-
-            setTimeout(
-                () => {
-
-                    copyJsonButton.textContent =
-                        originalText;
-
-                },
-                1500
-            );
-
-        } catch (error) {
-
-            /*
-             * Clipboard API가 차단된 경우
-             */
-            jsonOutput.select();
-
-            document.execCommand(
-                "copy"
-            );
-
-
-            alert(
-                "JSON을 클립보드에 복사했습니다."
-            );
-        }
-    }
+    copyJson
 );
+
+
+async function copyJson() {
+
+    try {
+
+        await navigator.clipboard.writeText(
+            jsonOutput.value
+        );
+
+
+        const originalText =
+            copyJsonButton.textContent;
+
+
+        copyJsonButton.textContent =
+            "복사 완료";
+
+
+        setTimeout(
+            () => {
+
+                copyJsonButton.textContent =
+                    originalText;
+
+            },
+            1200
+        );
+
+    } catch (error) {
+
+        /*
+         * Clipboard API가 작동하지 않는 경우
+         */
+        jsonOutput.focus();
+
+        jsonOutput.select();
+
+        document.execCommand(
+            "copy"
+        );
+
+
+        alert(
+            "JSON을 복사했습니다."
+        );
+    }
+}
 
 
 /* =========================
@@ -802,7 +1184,9 @@ function downloadJson() {
         );
 
 
-    link.href = url;
+    link.href =
+        url;
+
 
     link.download =
         "words.json";
@@ -826,74 +1210,16 @@ function downloadJson() {
 
 
 /* =========================
-   ID 생성
+   HTML attribute용 escape
 ========================= */
 
-function createUniqueChapterId() {
-
-    let id;
-
-
-    do {
-
-        id =
-            "chapter_" +
-            Date.now() +
-            "_" +
-            Math.floor(
-                Math.random() * 10000
-            );
-
-    } while (
-        wordData.chapters.some(
-            chapter =>
-                chapter.id === id
-        )
-    );
-
-
-    return id;
-}
-
-
-function createUniqueWordId(
-    chapter
+function escapeHtmlAttribute(
+    value
 ) {
 
-    let id;
-
-
-    do {
-
-        id =
-            "word_" +
-            Date.now() +
-            "_" +
-            Math.floor(
-                Math.random() * 10000
-            );
-
-    } while (
-        chapter.words.some(
-            word =>
-                word.id === id
-        )
-    );
-
-
-    return id;
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
 }
-
-
-/* =========================
-   메인으로
-========================= */
-
-backButton.addEventListener(
-    "click",
-    () => {
-
-        window.location.href =
-            "index.html";
-    }
-);
