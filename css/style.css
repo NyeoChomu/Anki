@@ -884,3 +884,10 @@ button {
         min-height: 300px;
     }
 }
+.settings-link-container {
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-bottom: 12px;
+}
