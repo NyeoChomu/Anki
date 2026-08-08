@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>설정</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+</head>
+
+<body>
+
+<header class="site-header">
+
+    <h1>설정</h1>
+
+</header>
+
+
+<main class="settings-container">
+
+    <!-- =========================
+         챕터 추가
+    ========================== -->
+
+    <section class="settings-section">
+
+        <h2>챕터 추가</h2>
+
+        <div class="input-group">
+
+            <label for="chapterName">
+                챕터 이름
+            </label>
+
+            <input
+                id="chapterName"
+                type="text"
+                placeholder="예: N1 동사"
+            >
+
+        </div>
+
+
+        <button
+            id="addChapterButton"
+            class="primary-button"
+        >
+            챕터 추가
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         단어 추가
+    ========================== -->
+
+    <section class="settings-section">
+
+        <h2>단어 추가</h2>
+
+        <div class="input-group">
+
+            <label for="chapterSelect">
+                챕터
+            </label>
+
+            <select id="chapterSelect">
+                <option value="">
+                    챕터를 선택하세요
+                </option>
+            </select>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="wordInput">
+                단어
+            </label>
+
+            <input
+                id="wordInput"
+                type="text"
+                placeholder="예: 促す"
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="readingInput">
+                발음
+            </label>
+
+            <input
+                id="readingInput"
+                type="text"
+                placeholder="예: うながす"
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="meaningInput">
+                뜻
+            </label>
+
+            <input
+                id="meaningInput"
+                type="text"
+                placeholder="예: 촉구하다"
+            >
+
+        </div>
+
+
+        <button
+            id="addWordButton"
+            class="primary-button"
+        >
+            단어 추가
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         현재 데이터
+    ========================== -->
+
+    <section class="settings-section">
+
+        <h2>현재 데이터</h2>
+
+        <div
+            id="dataList"
+            class="data-list"
+        >
+            데이터를 불러오는 중...
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         JSON 출력
+    ========================== -->
+
+    <section class="settings-section">
+
+        <div class="json-header">
+
+            <h2>생성된 JSON</h2>
+
+            <button
+                id="copyJsonButton"
+                class="secondary-button"
+            >
+                JSON 복사
+            </button>
+
+        </div>
+
+
+        <textarea
+            id="jsonOutput"
+            class="json-output"
+            readonly
+        ></textarea>
+
+
+        <button
+            id="downloadJsonButton"
+            class="secondary-button full-button"
+        >
+            words.json 다운로드
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         메인으로
+    ========================== -->
+
+    <button
+        id="backButton"
+        class="back-button"
+    >
+        메인으로 돌아가기
+    </button>
+
+</main>
+
+
+<script src="js/common.js"></script>
+<script src="js/settings.js"></script>
+
+</body>
+</html>
