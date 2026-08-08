@@ -491,3 +491,396 @@ button {
         padding: 14px;
     }
 }
+/* =========================
+   설정 페이지
+========================= */
+
+.settings-container {
+    width: min(800px, calc(100% - 32px));
+
+    margin: 40px auto;
+}
+
+
+.settings-section {
+    margin-bottom: 20px;
+
+    padding: 24px;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+
+.settings-section h2 {
+    margin: 0 0 20px;
+
+    font-size: 20px;
+}
+
+
+/* =========================
+   입력
+========================= */
+
+.input-group {
+    margin-bottom: 16px;
+}
+
+
+.input-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.input-group input,
+.input-group select {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #222;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #777;
+}
+
+
+/* =========================
+   버튼
+========================= */
+
+.secondary-button {
+    padding: 11px 16px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #333;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+
+.secondary-button:hover {
+    background: #f5f5f5;
+}
+
+
+.full-button {
+    width: 100%;
+
+    margin-top: 12px;
+}
+
+
+.back-button {
+    width: 100%;
+
+    margin-bottom: 40px;
+
+    padding: 14px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #555;
+
+    font-size: 15px;
+
+    cursor: pointer;
+}
+
+
+.back-button:hover {
+    background: #f5f5f5;
+}
+
+
+/* =========================
+   현재 데이터
+========================= */
+
+.data-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+.data-chapter {
+    padding: 16px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+}
+
+
+.data-chapter-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid #eee;
+}
+
+
+.data-chapter-name {
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+
+.data-chapter-count {
+    margin-top: 4px;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   단어 목록
+========================= */
+
+.data-word-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-top: 12px;
+}
+
+
+.data-word {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 12px;
+
+    background: #f8f8f8;
+
+    border-radius: 8px;
+}
+
+
+.data-word-info {
+    min-width: 0;
+}
+
+
+.data-word-text {
+    font-size: 18px;
+
+    font-weight: 600;
+}
+
+
+.data-word-reading {
+    margin-top: 3px;
+
+    font-size: 14px;
+
+    color: #555;
+}
+
+
+.data-word-meaning {
+    margin-top: 3px;
+
+    font-size: 14px;
+
+    color: #777;
+}
+
+
+/* =========================
+   삭제 버튼
+========================= */
+
+.delete-button {
+    flex-shrink: 0;
+
+    padding: 7px 10px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #777;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+.delete-button:hover {
+    background: #f0f0f0;
+
+    color: #222;
+}
+
+
+.word-delete-button {
+    padding: 6px 9px;
+}
+
+
+/* =========================
+   JSON
+========================= */
+
+.json-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 12px;
+}
+
+
+.json-header h2 {
+    margin: 0;
+}
+
+
+.json-output {
+    display: block;
+
+    width: 100%;
+
+    min-height: 400px;
+
+    padding: 14px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    background: #f8f8f8;
+
+    color: #222;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    resize: vertical;
+
+    outline: none;
+}
+
+
+/* =========================
+   빈 데이터
+========================= */
+
+.empty-message {
+    margin: 12px 0;
+
+    color: #888;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   모바일
+========================= */
+
+@media (max-width: 600px) {
+
+    .settings-container {
+        width: calc(100% - 24px);
+
+        margin: 24px auto;
+    }
+
+
+    .settings-section {
+        padding: 18px;
+    }
+
+
+    .data-chapter-header {
+        align-items: flex-start;
+    }
+
+
+    .data-word {
+        align-items: flex-start;
+    }
+
+
+    .json-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .json-output {
+        min-height: 300px;
+    }
+}
