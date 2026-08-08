@@ -266,6 +266,6 @@ settingsButton.addEventListener(
     () => {
 
         window.location.href =
-            "settings.html";
+            "setting.html";
     }
 );
