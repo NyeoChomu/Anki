@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
@@ -26,6 +28,58 @@
 
 <main class="settings-container">
 
+
+    <!-- =========================
+         메인으로 돌아가기
+    ========================== -->
+
+    <div class="settings-top">
+
+        <a
+            href="index.html"
+            class="back-button"
+        >
+            메인으로 돌아가기
+        </a>
+
+    </div>
+
+
+    <!-- =========================
+         챕터 선택
+    ========================== -->
+
+    <section class="settings-section">
+
+        <h2>챕터 선택</h2>
+
+
+        <div class="chapter-select-row">
+
+            <select
+                id="chapterSelect"
+            >
+
+                <option value="">
+                    챕터를 선택하세요
+                </option>
+
+            </select>
+
+
+            <button
+                id="deleteChapterButton"
+                class="danger-button"
+                type="button"
+            >
+                챕터 삭제
+            </button>
+
+        </div>
+
+    </section>
+
+
     <!-- =========================
          챕터 추가
     ========================== -->
@@ -34,14 +88,15 @@
 
         <h2>챕터 추가</h2>
 
+
         <div class="input-group">
 
-            <label for="chapterName">
+            <label for="newChapterName">
                 챕터 이름
             </label>
 
             <input
-                id="chapterName"
+                id="newChapterName"
                 type="text"
                 placeholder="예: N1 동사"
             >
@@ -52,6 +107,7 @@
         <button
             id="addChapterButton"
             class="primary-button"
+            type="button"
         >
             챕터 추가
         </button>
@@ -60,103 +116,136 @@
 
 
     <!-- =========================
-         단어 추가
+         선택된 챕터
     ========================== -->
 
-    <section class="settings-section">
+    <section
+        id="chapterEditor"
+        class="settings-section hidden"
+    >
 
-        <h2>단어 추가</h2>
+        <h2>챕터 수정</h2>
 
-        <div class="input-group">
 
-            <label for="chapterSelect">
-                챕터
-            </label>
-
-            <select id="chapterSelect">
-                <option value="">
-                    챕터를 선택하세요
-                </option>
-            </select>
-
-        </div>
-
+        <!-- 챕터 이름 -->
 
         <div class="input-group">
 
-            <label for="wordInput">
-                단어
+            <label for="chapterName">
+                챕터 이름
             </label>
 
             <input
-                id="wordInput"
+                id="chapterName"
                 type="text"
-                placeholder="예: 促す"
-            >
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label for="readingInput">
-                발음
-            </label>
-
-            <input
-                id="readingInput"
-                type="text"
-                placeholder="예: うながす"
-            >
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label for="meaningInput">
-                뜻
-            </label>
-
-            <input
-                id="meaningInput"
-                type="text"
-                placeholder="예: 촉구하다"
             >
 
         </div>
 
 
         <button
-            id="addWordButton"
-            class="primary-button"
+            id="saveChapterButton"
+            class="secondary-button"
+            type="button"
         >
-            단어 추가
+            챕터 이름 저장
         </button>
 
-    </section>
 
+        <!-- =========================
+             단어 목록
+        ========================== -->
 
-    <!-- =========================
-         현재 데이터
-    ========================== -->
+        <div class="word-editor-header">
 
-    <section class="settings-section">
+            <h2>단어 목록</h2>
 
-        <h2>현재 데이터</h2>
+            <span
+                id="wordCount"
+                class="word-count"
+            >
+                0단어
+            </span>
+
+        </div>
+
 
         <div
-            id="dataList"
-            class="data-list"
+            id="wordList"
+            class="word-editor-list"
         >
-            데이터를 불러오는 중...
+        </div>
+
+
+        <!-- =========================
+             단어 추가
+        ========================== -->
+
+        <div class="add-word-box">
+
+            <h3>단어 추가</h3>
+
+
+            <div class="input-group">
+
+                <label for="newWord">
+                    일본어
+                </label>
+
+                <input
+                    id="newWord"
+                    type="text"
+                    placeholder="예: 促す"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label for="newReading">
+                    발음
+                </label>
+
+                <input
+                    id="newReading"
+                    type="text"
+                    placeholder="예: うながす"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label for="newMeaning">
+                    뜻
+                </label>
+
+                <input
+                    id="newMeaning"
+                    type="text"
+                    placeholder="예: 촉구하다"
+                >
+
+            </div>
+
+
+            <button
+                id="addWordButton"
+                class="primary-button"
+                type="button"
+            >
+                단어 추가
+            </button>
+
         </div>
 
     </section>
 
 
     <!-- =========================
-         JSON 출력
+         JSON
     ========================== -->
 
     <section class="settings-section">
@@ -165,9 +254,11 @@
 
             <h2>생성된 JSON</h2>
 
+
             <button
                 id="copyJsonButton"
                 class="secondary-button"
+                type="button"
             >
                 JSON 복사
             </button>
@@ -185,6 +276,7 @@
         <button
             id="downloadJsonButton"
             class="secondary-button full-button"
+            type="button"
         >
             words.json 다운로드
         </button>
@@ -192,22 +284,12 @@
     </section>
 
 
-    <!-- =========================
-         메인으로
-    ========================== -->
-
-    <button
-        id="backButton"
-        class="back-button"
-    >
-        메인으로 돌아가기
-    </button>
-
 </main>
 
 
 <script src="js/common.js"></script>
-<script src="js/settings.js"></script>
+<script src="js/setting.js"></script>
 
 </body>
+
 </html>
