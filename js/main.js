@@ -255,3 +255,17 @@ function startQuiz() {
     window.location.href =
         "quiz.html";
 }
+const settingsButton =
+    document.getElementById(
+        "settingsButton"
+    );
+
+
+settingsButton.addEventListener(
+    "click",
+    () => {
+
+        window.location.href =
+            "settings.html";
+    }
+);
